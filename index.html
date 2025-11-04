@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flame - Приложение для знакомств 18+</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            color: white;
+            overflow-x: hidden;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+        }
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .glow {
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #ff0080, #ff8c00);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        .feature-icon {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        /* Анимации для новой секции */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { box-shadow: 0 0 20px rgba(255, 255, 255, 0.8); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        .glowing {
+            animation: glow 2s ease-in-out infinite;
+        }
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+        
+        /* Стили для интерактивных элементов */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .profile-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        .flame-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #ff9900;
+            box-shadow: 0 0 10px #ff5500;
+        }
+        
+        /* Стили для модальных окон */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .modal-content {
+            background-color: white;
+            color: #333;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #888;
+        }
+        .close-btn:hover {
+            color: #333;
+        }
+        .modal-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ff416c;
+        }
+        .modal-text {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        .modal-list {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        .modal-list li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <!-- Hero Section -->
+    <section class="gradient-bg py-20 px-4">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+                        НАЙДИ СВОЮ <span class="text-yellow-300">ИСКРУ</span> СЕГОДНЯ
+                    </h1>
+                    <p class="text-xl mb-8 opacity-90">
+                        Приложение для смелых и открытых знакомств. Только для взрослых 18+.
+                    </p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#" class="btn-primary text-white font-bold py-4 px-8 rounded-full text-center pulse-animation">
+                            СКАЧАТЬ БЕСПЛАТНО
+                        </a>
+                        <a href="#" class="bg-white text-pink-600 font-bold py-4 px-8 rounded-full text-center hover:bg-gray-100 transition">
+                            УЗНАТЬ БОЛЬШЕ
+                        </a>
+                    </div>
+                    <p class="mt-4 text-sm opacity-80">
+                        *Только для пользователей старше 18 лет
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <!-- Анимированный контейнер -->
+                        <div class="relative h-96">
+                            <!-- Плавающие профили -->
+                            <div class="absolute top-0 left-0 w-40 profile-card floating" style="animation-delay: 0s;">
+                                <div class="h-32 bg-gradient-to-br from-pink-400 to-purple-500 rounded-t-lg"></div>
+                                <div class="p-3">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                                        <p class="font-bold text-sm">Аня, 24</p>
+                                    </div>
+                                    <p class="text-xs opacity-80">В 200 метрах от вас</p>
+                                </div>
+                            </div>
+                            
+                            <div class="absolute top-10 right-0 w-40 profile-card floating" style="animation-delay: 0.5s;">
+                                <div class="h-32 bg-gradient-to-br from-blue-400 to-teal-500 rounded-t-lg"></div>
+                                <div class="p-3">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                                        <p class="font-bold text-sm">Мария, 26</p>
+                                    </div>
+                                    <p class="text-xs opacity-80">В 350 метрах от вас</p>
+                                </div>
+                            </div>
+                            
+                            <div class="absolute bottom-10 left-10 w-40 profile-card floating" style="animation-delay: 1s;">
+                                <div class="h-32 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-t-lg"></div>
+                                <div class="p-3">
+                                    <div class="flex items-center mb-2">
+                                        <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                                        <p class="font-bold text-sm">Катя, 22</p>
+                                    </div>
+                                    <p class="text-xs opacity-80">В 500 метрах от вас</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Центральный элемент - пламя -->
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                                <div class="relative">
+                                    <div class="w-24 h-24 bg-gradient-to-b from-yellow-400 to-red-500 rounded-full glowing flex items-center justify-center">
+                                        <span class="text-white text-4xl">🔥</span>
+                                    </div>
+                                    <!-- Анимированные частицы -->
+                                    <div id="particles-container" class="absolute top-0 left-0 w-full h-full"></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Уведомление -->
+                            <div class="absolute bottom-0 right-0 bg-black bg-opacity-70 p-4 rounded-lg fade-in" style="animation-delay: 1.5s;">
+                                <p class="text-sm">🔥 <span class="font-bold">Аня, 24</span> рядом с вами</p>
+                                <div class="flex mt-2">
+                                    <button class="bg-green-500 text-white text-xs py-1 px-3 rounded mr-2 hover:bg-green-600 transition">❤️ Лайк</button>
+                                    <button class="bg-gray-500 text-white text-xs py-1 px-3 rounded hover:bg-gray-600 transition">✖️ Пропустить</button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Индикатор загрузки -->
+                        <div class="mt-8 text-center">
+                            <p class="text-sm mb-2">Поиск людей рядом...</p>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5 bg-opacity-30">
+                                <div class="bg-yellow-400 h-2.5 rounded-full w-3/4 glowing"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-16 px-4 bg-white text-gray-800">
+        <div class="container mx-auto max-w-6xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">ПОЧЕМУ ВЫБИРАЮТ FLAME?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center p-6 rounded-xl bg-gradient-to-br from-pink-50 to-orange-50">
+                    <div class="feature-icon mb-4">
+                        <span class="text-3xl">🔥</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">МГНОВЕННЫЕ ЗНАКОМСТВА</h3>
+                    <p>Находите людей рядом с вами и начинайте общение прямо сейчас</p>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-gradient-to-br from-pink-50 to-orange-50">
+                    <div class="feature-icon mb-4">
+                        <span class="text-3xl">💬</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">ПРИВАТНЫЕ ЧАТЫ</h3>
+                    <p>Общайтесь безопасно с функцией самоуничтожающихся сообщений</p>
+                </div>
+                <div class="text-center p-6 rounded-xl bg-gradient-to-br from-pink-50 to-orange-50">
+                    <div class="feature-icon mb-4">
+                        <span class="text-3xl">🎯</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">ТОЧНЫЙ ПОИСК</h3>
+                    <p>Находите именно тех, кто разделяет ваши интересы и желания</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16 px-4 gradient-bg">
+        <div class="container mx-auto max-w-4xl text-center">
+            <h2 class="text-3xl md:text-5xl font-bold mb-6">ГОТОВЫ НАЙТИ СВОЮ ИСКРУ?</h2>
+            <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+                Присоединяйтесь к миллионам пользователей, которые уже нашли свои идеальные знакомства
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <a href="#" class="bg-black text-white font-bold py-4 px-8 rounded-full inline-flex items-center justify-center hover:bg-gray-800 transition">
+                    <span class="mr-2">🤖</span> Скачать приложение
+                </a>
+            </div>
+            <p class="mt-6 text-sm opacity-80">*Приложение предназначено для пользователей старше 18 лет</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-4 bg-gray-900 text-white text-sm">
+        <div class="container mx-auto max-w-6xl">
+            <div class="flex flex-col md:flex-row justify-between">
+                <div class="mb-6 md:mb-0">
+                    <p class="text-xl font-bold mb-2">FLAME</p>
+                    <p class="mb-4">Приложение для знакомств 18+</p>
+                    
+                    <!-- Информация о компании -->
+                    <div class="mt-4 text-gray-300">
+                        <p class="font-semibold mb-2">ООО "Активные Технологии"</p>
+                        <p><span class="font-medium">ОГРН:</span> 1097746595880</p>
+                        <p><span class="font-medium">ИНН:</span> 7705898788</p>
+                        <p class="mt-2"><span class="font-medium">Юридический адрес:</span></p>
+                        <p>115054, г. Москва, ул. Большая Пионерская, д. 15 стр. 1, этаж 1 пом II офис 5в</p>
+                        <p class="mt-2"><span class="font-medium">Телефон:</span> +7 (958) 183-81-92</p>
+                    </div>
+                </div>
+                
+                <div class="flex flex-col space-y-4">
+                    <a href="#" class="hover:text-pink-400 transition" onclick="openModal('privacyModal')">Политика конфиденциальности</a>
+                    <a href="#" class="hover:text-pink-400 transition" onclick="openModal('termsModal')">Условия использования</a>
+                </div>
+            </div>
+            
+            <div class="mt-8 pt-6 border-t border-gray-700 text-center text-gray-400">
+                <p>© 2023-2025 Flame. Все права защищены. Приложение предназначено исключительно для совершеннолетних пользователей.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно Политика конфиденциальности -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('privacyModal')">&times;</span>
+            <h2 class="modal-title">Политика конфиденциальности</h2>
+            
+            <div class="modal-text">
+                <p>Настоящая Политика конфиденциальности регулирует порядок обработки и использования персональных данных пользователей приложения Flame (далее — "Приложение"), принадлежащего ООО "Активные Технологии" (ОГРН: 1097746595880, ИНН: 7705898788).</p>
+                
+                <h3 class="font-bold mt-4 mb-2">1. Сбор информации</h3>
+                <p>Мы собираем следующую информацию:</p>
+                <ul class="modal-list">
+                    <li>Основные данные профиля (имя, возраст, пол)</li>
+                    <li>Фотографии профиля</li>
+                    <li>Геолокационные данные (для поиска пользователей поблизости)</li>
+                    <li>Информация о предпочтениях и интересах</li>
+                    <li>История взаимодействий с другими пользователями</li>
+                </ul>
+                
+                <h3 class="font-bold mt-4 mb-2">2. Использование информации</h3>
+                <p>Собранная информация используется для:</p>
+                <ul class="modal-list">
+                    <li>Создания и персонализации вашего профиля</li>
+                    <li>Подбора совместимых пользователей</li>
+                    <li>Обеспечения функциональности Приложения</li>
+                    <li>Улучшения пользовательского опыта</li>
+                    <li>Обеспечения безопасности пользователей</li>
+                </ul>
+                
+                <h3 class="font-bold mt-4 mb-2">3. Защита данных</h3>
+                <p>Мы принимаем все необходимые меры для защиты ваших персональных данных от несанкционированного доступа, изменения, раскрытия или уничтожения.</p>
+                
+                <h3 class="font-bold mt-4 mb-2">4. Передача данных третьим лицам</h3>
+                <p>Мы не передаем ваши персональные данные третьим лицам, за исключением случаев, предусмотренных законодательством Российской Федерации.</p>
+                
+                <h3 class="font-bold mt-4 mb-2">5. Возрастные ограничения</h3>
+                <p>Приложение предназначено исключительно для пользователей старше 18 лет. Мы не собираем и не обрабатываем данные несовершеннолетних.</p>
+                
+                <p class="mt-6">Дата последнего обновления: 01.11.2023</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно Условия использования -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('termsModal')">&times;</span>
+            <h2 class="modal-title">Условия использования</h2>
+            
+            <div class="modal-text">
+                <p>Настоящие Условия использования регулируют отношения между ООО "Активные Технологии" (далее — "Компания") и пользователями мобильного приложения Flame (далее — "Приложение").</p>
+                
+                <h3 class="font-bold mt-4 mb-2">1. Общие положения</h3>
+                <p>Используя Приложение, вы подтверждаете, что:</p>
+                <ul class="modal-list">
+                    <li>Вам исполнилось 18 лет</li>
+                    <li>Вы принимаете настоящие Условия использования</li>
+                    <li>Вы согласны с Политикой конфиденциальности</li>
+                    <li>Вы предоставляете достоверную информацию о себе</li>
+                </ul>
+                
+                <h3 class="font-bold mt-4 mb-2">2. Правила поведения</h3>
+                <p>Пользователям запрещается:</p>
+                <ul class="modal-list">
+                    <li>Размещать контент порнографического характера</li>
+                    <li>Оскорблять других пользователей</li>
+                    <li>Использовать Приложение для коммерческой деятельности без согласия Компании</li>
+                    <li>Предоставлять ложную информацию о себе</li>
+                    <li>Распространять спам или вредоносный контент</li>
+                </ul>
+                
+                <h3 class="font-bold mt-4 mb-2">3. Интеллектуальная собственность</h3>
+                <p>Все права на Приложение, включая дизайн, логотип, программный код и другие элементы, принадлежат Компании. Пользователи не имеют права копировать, модифицировать или распространять Приложение без письменного разрешения Компании.</p>
+                
+                <h3 class="font-bold mt-4 mb-2">4. Ограничение ответственности</h3>
+                <p>Компания не несет ответственности за:</p>
+                <ul class="modal-list">
+                    <li>Действия пользователей вне Приложения</li>
+                    <li>Достоверность информации, предоставленной пользователями</li>
+                    <li>Любые убытки, возникшие в результате использования Приложения</li>
+                </ul>
+                
+                <h3 class="font-bold mt-4 mb-2">5. Изменение условий</h3>
+                <p>Компания оставляет за собой право вносить изменения в настоящие Условия использования. Продолжение использования Приложения после внесения изменений означает ваше согласие с новыми условиями.</p>
+                
+                <p class="mt-6">Дата последнего обновления: 01.11.2023</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Создание анимированных частиц
+        function createParticles() {
+            const container = document.getElementById('particles-container');
+            const particleCount = 15;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('flame-particle');
+                
+                // Случайная позиция вокруг центра
+                const angle = Math.random() * Math.PI * 2;
+                const distance = 30 + Math.random() * 40;
+                const x = Math.cos(angle) * distance;
+                const y = Math.sin(angle) * distance;
+                
+                particle.style.left = `calc(50% + ${x}px)`;
+                particle.style.top = `calc(50% + ${y}px)`;
+                
+                // Случайная анимация
+                const duration = 1 + Math.random() * 2;
+                const delay = Math.random() * 2;
+                
+                particle.style.animation = `float ${duration}s ease-in-out ${delay}s infinite`;
+                
+                container.appendChild(particle);
+            }
+        }
+        
+        // Функции для работы с модальными окнами
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+        
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+        
+        // Закрытие модального окна при клике вне его
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+        
+        // Запуск анимации при загрузке страницы
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Добавление интерактивности к карточкам профилей
+            const profileCards = document.querySelectorAll('.profile-card');
+            profileCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('glowing');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
